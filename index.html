@@ -1,0 +1,39 @@
+<script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
+<script>
+/* global nn*/
+
+const GIF = "https://media.tenor.com/Tdfcx1hxvc0AAAAi/spider-man-marvel-future-revolution.gif"
+
+const COLOR = 'plum'
+
+async function createGif (x, y) {
+  const gif = await nn.loadImage(GIF)
+  nn.create('img')
+    .set({ src: 
+        `${GIF}#${Math.random()}`
+        })
+    .css({
+      position: 'absolute',
+      left: x - gif.width / 2,
+      top: y - gif.height / 2,
+      imageRendering: 'pixelated'
+    })
+    .addTo('body')
+}
+
+async function setup () {
+  nn.get('body').css({ backgroundColor: COLOR})
+  
+  const gif = await nn.loadImage(GIF)
+  for (let i = 0; i < 100; i++){
+    const x = i * gif.width / 4
+    const y = nn.height / 2
+    createGif(x, y)
+  }
+  }
+nn.on('load', setup)
+
+    //const landscape = nn.width > nn.height
+/// const size = nn.width > nn.height ? nn.height / 2 : nn.width / 2
+///ternary statements are neat!
+</script>
