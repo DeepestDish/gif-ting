@@ -1,16 +1,40 @@
 <script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
 <script>
 /* global nn*/
+
 window.onscroll = function () { window.scrollTo(0, 0); };
 const GIF = "https://web.archive.org/web/20070915015233im_/http://www.heathersanimations.com/skeletons/jump.gif"
 
 const BG = "https://cdn.pixabay.com/photo/2015/10/15/18/55/cemetery-989920_1280.jpg"
+
+const TEXT = "custom_text.png"
 
 const COLOR = 'black'
 
 let time = 0
 let time2 = 0
 
+function init (body) {
+  body.remove()
+  setup()
+}
+
+function disclaimer () {
+const init_body = nn.create('span')
+    .content("WARNING: flickering imagery due to sussy code. click this text if that's ok")
+    .css({
+      position: 'absolute',
+      left: 0,
+      top: 0,
+    })
+    .addTo('body')
+    .on('click', () => init(init_body))}
+
+
+  
+///yeah I know it's technically no longer for gifs only
+///i can't be bothered to rename it
+///do you like tomatoes?
 async function createGif (x, y, source, size) {
   const gif = await nn.loadImage(source)
   nn.create('img')
@@ -28,6 +52,7 @@ async function createGif (x, y, source, size) {
 }
 
 async function setup () {
+  document.body.innerText = ""
   time += 1
   time2 += 1
   nn.get('body').css({ backgroundColor: COLOR})
@@ -43,10 +68,12 @@ async function setup () {
   const gif = await nn.loadImage(GIF)
   for (let i = 0; i < 12; i++){
     const x = ((i - 1) * gif.width / 0.5) + (time * 2)
-    const y = (nn.height / 2) + (Math.sin(time) * 50) + (Math.random() * 80) - 100
+    const y = (nn.height / 2) + (Math.sin(time) * 50) + (Math.random() * 60) - 100
     createGif(x, y, GIF, 1)
   }
-
+  
+  createGif(500, 600, TEXT, 0.69)
+  
   if (time === 110){
     time = 0
   }
@@ -59,6 +86,6 @@ async function setup () {
   //console.log(time)
   }
 
-nn.on('load', setup)
+nn.on('load', disclaimer)
 
 </script>
