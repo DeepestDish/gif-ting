@@ -1,39 +1,64 @@
 <script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
 <script>
 /* global nn*/
+window.onscroll = function () { window.scrollTo(0, 0); };
+const GIF = "https://web.archive.org/web/20070915015233im_/http://www.heathersanimations.com/skeletons/jump.gif"
 
-const GIF = "https://media.tenor.com/Tdfcx1hxvc0AAAAi/spider-man-marvel-future-revolution.gif"
+const BG = "https://cdn.pixabay.com/photo/2015/10/15/18/55/cemetery-989920_1280.jpg"
 
-const COLOR = 'plum'
+const COLOR = 'black'
 
-async function createGif (x, y) {
-  const gif = await nn.loadImage(GIF)
+let time = 0
+let time2 = 0
+
+async function createGif (x, y, source, size) {
+  const gif = await nn.loadImage(source)
   nn.create('img')
     .set({ src: 
-        `${GIF}#${Math.random()}`
+        source
         })
     .css({
       position: 'absolute',
       left: x - gif.width / 2,
       top: y - gif.height / 2,
+    width: gif.width * size,
       imageRendering: 'pixelated'
     })
     .addTo('body')
 }
 
 async function setup () {
+  time += 1
+  time2 += 1
   nn.get('body').css({ backgroundColor: COLOR})
+
+  //createGif((nn.width / 2) - 100 + time2, nn.height / 2, GIF2, 1.5)
+  const background = await nn.loadImage(BG)
+  const bg_height = (background.height / 2) - 150
+  
+  createGif(time2 * 1, bg_height, BG, 1)
+  createGif((time2 * 1) - background.width, bg_height, BG, 1)
+  createGif((time2 * 1) + background.width, bg_height, BG, 1)
   
   const gif = await nn.loadImage(GIF)
-  for (let i = 0; i < 100; i++){
-    const x = i * gif.width / 4
-    const y = nn.height / 2
-    createGif(x, y)
+  for (let i = 0; i < 12; i++){
+    const x = ((i - 1) * gif.width / 0.5) + (time * 2)
+    const y = (nn.height / 2) + (Math.sin(time) * 50) + (Math.random() * 80) - 100
+    createGif(x, y, GIF, 1)
   }
+
+  if (time === 110){
+    time = 0
   }
+  
+  if (time2 === background.width){
+    time2 = 0
+  }
+  //requestAnimationFrame(setup)
+  setTimeout(setup, 50)
+  //console.log(time)
+  }
+
 nn.on('load', setup)
 
-    //const landscape = nn.width > nn.height
-/// const size = nn.width > nn.height ? nn.height / 2 : nn.width / 2
-///ternary statements are neat!
 </script>
