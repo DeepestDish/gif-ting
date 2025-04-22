@@ -69,14 +69,14 @@ async function setup () {
   createGif((time2 * 1) + background.width, bg_height, BG, 1)
   
   const gif = await nn.loadImage(GIF)
-  const count = Math.floor(nn.width / gif.width)
+  const count = 1.5 * Math.floor(nn.width / gif.width)
   for (let i = 0; i < count; i++){
     const x = ((i - 1) * gif.width / 0.5) + (time * 2)
     const y = (nn.height / 2) + (Math.sin(time) * 50) + (Math.random() * 60) - 100
     createGif(x, y, GIF, 1)
   }
   
-  createGif(page_width, 600, TEXT, 0.69)
+  createGif(page_width * 2, 600, TEXT, 0.69)
   
   if (time === 110){
     time = 0
